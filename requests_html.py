@@ -1,4 +1,5 @@
 import sys
+import os
 import asyncio
 from urllib.parse import urlparse, urlunparse, urljoin
 from concurrent.futures import ThreadPoolExecutor
@@ -22,6 +23,7 @@ from parse import search as parse_search
 from parse import findall, Result
 from w3lib.encoding import html_to_unicode
 
+CHROME_PATH=os.environ.get('GOOGLE_CHROME_SHIM', None)
 DEFAULT_ENCODING = 'utf-8'
 DEFAULT_URL = 'https://example.org/'
 DEFAULT_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8'
@@ -779,7 +781,7 @@ class BaseSession(requests.Session):
     @property
     async def browser(self):
         if not hasattr(self, "_browser"):
-            self._browser = await pyppeteer.launch(ignoreHTTPSErrors=not(self.verify), headless=True, executablePath=GOOGLE_CHROME_SHIM, args=self.__browser_args)
+            self._browser = await pyppeteer.launch(ignoreHTTPSErrors=not(self.verify), headless=True, executablePath=CHROME_PATH, args=self.__browser_args)
 
         return self._browser
 
